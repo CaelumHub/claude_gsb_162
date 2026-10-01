@@ -53,6 +53,7 @@ class Heap:
     def allocate_list(self, items: list) -> rt.RuntimeList:
         obj = rt.RuntimeList(self._next_id, items)
         self._next_id += 1
+        obj.size = _approx_size(obj)
         self._objects[obj.oid] = obj
         self._allocation_count += 1
         self._refresh_peak()
@@ -115,7 +116,7 @@ class Heap:
                 "oid": oid,
                 "kind": obj.kind,
                 # 快照时按当前内容重新估算大小，避免 push/pop 等原地修改导致 size 失真
-                "size": obj.size,
+                "size": _approx_size(obj),
                 "refs": refs,
                 "repr": self._short_repr(obj),
                 "elements": elements,
