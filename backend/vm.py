@@ -545,7 +545,7 @@ class VM:
         if not isinstance(lst, rt.RuntimeList):
             self._builtin_type_error("列表", rt.type_name(lst))
         lst.items.append(val)
-        lst.size = len(lst.items)
+        # size（近似字节数）由堆快照时按当前内容统一重估，这里不维护
         return lst
 
     def _bi_pop(self, args):
